@@ -1,6 +1,6 @@
 import schedule
 import time
-from datetime import datetime
+from datetime import datetime,timedelta
 from PIL import Image, ImageDraw, ImageFont
 from instagrapi import Client
 import requests
@@ -254,14 +254,6 @@ def upload_to_instagram(image_paths, caption):
     if not valid_paths:
         raise Exception("No valid images to upload")
     
-    # 이미지 재확인 및 디버그
-    for path in valid_paths:
-        try:
-            with Image.open(path) as img:
-                img.show()
-        except Exception as e:
-            print(f"Failed to open image: {path} - {e}")
-    
     # 앨범 업로드
     try:
         album = cl.album_upload(paths=valid_paths, caption=caption)
@@ -279,10 +271,11 @@ def upload_to_instagram(image_paths, caption):
 
 # 7. 급식과 시간표 이미지를 생성하고 업로드하는 함수
 def create_and_upload_daily_info():
+    print("작업을 시작합니다")
     sc = "솔빛중학교"
     grade = 2
     class_ = 2
-    today = datetime.today()
+    today = datetime.today() + timedelta(days=1)
     date_str = today.strftime("%Y%m%d")
 
     diet_info = get_diet(sc, date_str)
@@ -294,8 +287,6 @@ def create_and_upload_daily_info():
     time_image_path = create_image_with_template(time_info, "시간표 정보", today, timetable_template_path, "time_info.jpg")
 
     upload_to_instagram([diet_image_path, time_image_path], f"#{date_str} #{sc}\n2학년 2반 시간표 및 급식")
-
-
 
 # 8. 매일 정해진 시간에 함수 실행
 schedule.every().day.at("18:00").do(create_and_upload_daily_info)
