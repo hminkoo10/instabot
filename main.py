@@ -261,8 +261,8 @@ def upload_to_instagram(image_paths, caption):
         
         # 스토리에 텍스트 공유
         story_text = "오늘의 급식과 시간표를 확인하세요!"
-        cl.photo_upload_to_story(image_paths[0], caption=story_text)
         cl.photo_upload_to_story(image_paths[1], caption=story_text)
+        cl.photo_upload_to_story(image_paths[0], caption=story_text)
         print("스토리에 게시물이 공유되었습니다.")
         
     except Exception as e:
@@ -286,7 +286,7 @@ def create_and_upload_daily_info():
     diet_image_path = create_image_with_template(diet_info, "급식 정보", today, diet_template_path, "diet_info.jpg")
     time_image_path = create_image_with_template(time_info, "시간표 정보", today, timetable_template_path, "time_info.jpg")
 
-    upload_to_instagram([diet_image_path, time_image_path], f"#{date_str} #{sc}\n2학년 2반 시간표 및 급식")
+    upload_to_instagram([time_image_path,diet_image_path], f"#{date_str} #{sc}\n2학년 2반 시간표 및 급식")
 
 # 8. 매일 정해진 시간에 함수 실행
 schedule.every().day.at("18:00").do(create_and_upload_daily_info)
