@@ -295,5 +295,8 @@ schedule.every().day.at("18:00").do(create_and_upload_daily_info)
 
 # 9. 스케줄러 실행
 while True:
-    schedule.run_pending()
+    try:
+        schedule.run_pending()
+    except:
+        pass
     time.sleep(1)
