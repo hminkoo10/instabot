@@ -17,6 +17,8 @@ secret = jload("./secret.json")
 neis_key = secret["neis_key"]
 insta_id = secret["insta_id"]
 insta_pw = secret["insta_pw"]
+cl = Client()
+cl.login(insta_id, insta_pw)
 
 # 0. 한국 요일 가져오기 함수
 def get_korean_day_name(date):
@@ -233,9 +235,6 @@ def create_image_with_template(text, title, date, template_path, file_name):
 
 # 6. 인스타그램에 사진 업로드
 def upload_to_instagram(image_paths, caption):
-    cl = Client()
-    cl.login(insta_id, insta_pw)
-
     # 파일 경로 확인 및 포맷 검증
     valid_paths = []
     for path in image_paths:
